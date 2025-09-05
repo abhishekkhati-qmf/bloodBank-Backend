@@ -27,7 +27,6 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(morgan('dev'));
 
-app.use('/api/test',require('./routes/testRroute.js'))
 app.use('/api/auth',require('./routes/authRoute.js'))
 app.use('/api/inventory',require('./routes/inventoryRoutes.js'))
 app.use('/api/analytics',require('./routes/analyticsRoutes.js'))
