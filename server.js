@@ -18,7 +18,7 @@ const app = express();
 
 //middlewares
 const corsOptions = {
-  origin: "http://localhost:5173",   
+  origin: "blood-bank-frontend-omega.vercel.app",   
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
 };
