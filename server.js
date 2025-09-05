@@ -18,7 +18,7 @@ const app = express();
 
 //middlewares
 const corsOptions = {
-  origin: "blood-bank-frontend-omega.vercel.app",   
+  origin: "https://blood-bank-frontend-omega.vercel.app",   
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
 };
@@ -27,16 +27,16 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(morgan('dev'));
 
-app.use('/api/v1/test',require('./routes/testRroute.js'))
-app.use('/api/v1/auth',require('./routes/authRoute.js'))
-app.use('/api/v1/inventory',require('./routes/inventoryRoutes.js'))
-app.use('/api/v1/analytics',require('./routes/analyticsRoutes.js'))
-app.use("/api/v1/admin", require("./routes/adminRoutes.js"));
-app.use('/api/v1/requests', require('./routes/requestRoutes.js'));
-app.use('/api/v1/donor-requests', require('./routes/donorRequestRoutes.js'));
-app.use('/api/v1/camps', require('./routes/campRoutes.js'));
-app.use('/api/v1/emergency', require('./routes/emergencyRequestRoutes.js'));
-app.use('/api/v1/donation-requests', require('./routes/donationRequestRoutes.js'));
+app.use('/api/test',require('./routes/testRroute.js'))
+app.use('/api/auth',require('./routes/authRoute.js'))
+app.use('/api/inventory',require('./routes/inventoryRoutes.js'))
+app.use('/api/analytics',require('./routes/analyticsRoutes.js'))
+app.use("/api/admin", require("./routes/adminRoutes.js"));
+app.use('/api/requests', require('./routes/requestRoutes.js'));
+app.use('/api/donor-requests', require('./routes/donorRequestRoutes.js'));
+app.use('/api/camps', require('./routes/campRoutes.js'));
+app.use('/api/emergency', require('./routes/emergencyRequestRoutes.js'));
+app.use('/api/donation-requests', require('./routes/donationRequestRoutes.js'));
 
 
 const PORT = process.env.PORT || 8080;
