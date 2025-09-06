@@ -418,6 +418,100 @@ const sendDonationResponseEmail = async (donor, organisation, donationRequest) =
   }
 };
 
+// Send emergency request notification email to donors
+const sendEmergencyRequestEmail = async (donor, emergencyRequest) => {
+  try {
+    const transporter = createTransporter();
+    
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: donor.email,
+      subject: `🚨 URGENT: Emergency Blood Request - ${emergencyRequest.bloodGroup} - LifeLink`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <div style="background: linear-gradient(135deg, #d32f2f 0%, #ff5722 100%); padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
+            <h1 style="color: white; margin: 0; font-size: 28px;">🚨 URGENT</h1>
+            <p style="color: white; margin: 10px 0 0 0; font-size: 16px;">Emergency Blood Request</p>
+          </div>
+          
+          <div style="padding: 30px; background: #f9f9f9;">
+            <h2 style="color: #d32f2f; text-align: center;">🚨 EMERGENCY BLOOD REQUEST</h2>
+            
+            <p style="color: #666; font-size: 16px; line-height: 1.6;">
+              Hi <strong>${donor.name}</strong>,
+            </p>
+            
+            <p style="color: #d32f2f; font-size: 18px; font-weight: bold; text-align: center;">
+              URGENT: A patient needs your blood group (${emergencyRequest.bloodGroup}) immediately!
+            </p>
+            
+            <div style="background: #ffebee; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 5px solid #d32f2f;">
+              <h3 style="color: #d32f2f; margin: 0 0 15px 0;">🚨 Emergency Details:</h3>
+              <p style="color: #d32f2f; margin: 5px 0;"><strong>Patient:</strong> ${emergencyRequest.patientName || 'Emergency Patient'}</p>
+              <p style="color: #d32f2f; margin: 5px 0;"><strong>Blood Group:</strong> ${emergencyRequest.bloodGroup}</p>
+              <p style="color: #d32f2f; margin: 5px 0;"><strong>Quantity Needed:</strong> ${emergencyRequest.quantity} ml</p>
+              <p style="color: #d32f2f; margin: 5px 0;"><strong>Hospital:</strong> ${emergencyRequest.hospitalName}</p>
+              <p style="color: #d32f2f; margin: 5px 0;"><strong>Urgency:</strong> ${emergencyRequest.urgency || 'High'}</p>
+              <p style="color: #d32f2f; margin: 5px 0;"><strong>Contact Phone:</strong> ${emergencyRequest.contactPhone}</p>
+              <p style="color: #d32f2f; margin: 5px 0;"><strong>Contact Person:</strong> ${emergencyRequest.contactPerson}</p>
+            </div>
+            
+            ${emergencyRequest.description ? `
+            <div style="background: #fff3e0; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <h4 style="color: #e65100; margin: 0 0 10px 0;">Additional Information:</h4>
+              <p style="color: #e65100; margin: 0; line-height: 1.6;">${emergencyRequest.description}</p>
+            </div>
+            ` : ''}
+            
+            <div style="text-align: center; margin: 30px 0;">
+              <p style="color: #d32f2f; font-size: 20px; font-weight: bold;">
+                ⏰ TIME IS CRITICAL - PLEASE CALL IMMEDIATELY!
+              </p>
+              <a href="tel:${emergencyRequest.contactPhone}" 
+                 style="background: linear-gradient(135deg, #d32f2f 0%, #ff5722 100%); 
+                        color: white; 
+                        padding: 20px 40px; 
+                        text-decoration: none; 
+                        border-radius: 25px; 
+                        font-weight: bold; 
+                        font-size: 18px;
+                        display: inline-block;
+                        margin: 10px;">
+                📞 CALL NOW: ${emergencyRequest.contactPhone}
+              </a>
+            </div>
+            
+            <div style="background: #e8f5e8; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <h4 style="color: #2e7d32; margin: 0 0 15px 0;">Your Blood Group ${donor.bloodGroup} is needed!</h4>
+              <p style="color: #2e7d32; margin: 0; line-height: 1.6;">
+                This is an emergency situation where every minute counts. Your donation could save a life today.
+              </p>
+            </div>
+            
+            <div style="background: #fff3e0; padding: 15px; border-radius: 8px; text-align: center;">
+              <p style="margin: 0; color: #e65100; font-size: 14px;">
+                This is an automated emergency notification. Please respond directly to the contact number above.
+              </p>
+            </div>
+          </div>
+          
+          <div style="background: #333; padding: 20px; text-align: center; border-radius: 0 0 10px 10px;">
+            <p style="color: #999; margin: 0; font-size: 12px;">
+              © 2025 LifeLink Blood Bank. All rights reserved.
+            </p>
+          </div>
+        </div>
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+    return true;
+  } catch (error) {
+    console.log("Error sending emergency request email: ", error);
+    return false;
+  }
+};
+
 module.exports = {
   generateToken,
   sendVerificationEmail,
@@ -425,4 +519,5 @@ module.exports = {
   sendCampNotificationEmail,
   sendDonationRequestEmail,
   sendDonationResponseEmail,
+  sendEmergencyRequestEmail,
 };

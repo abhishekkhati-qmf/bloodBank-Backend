@@ -1,6 +1,6 @@
 const emergencyRequestModel = require("../models/emergencyRequestModel");
 const userModel = require("../models/userModel");
-const nodemailer = require("nodemailer");
+const { sendEmergencyRequestEmail } = require("../services/emailService");
 
 // Create emergency request
 const createEmergencyRequest = async (req, res) => {
@@ -85,7 +85,7 @@ const broadcastToEligibleDonors = async (emergencyRequest) => {
     for (const donorInfo of emergencyRequest.eligibleDonors) {
       const donor = await userModel.findById(donorInfo.donor);
       if (donor && donor.email) {
-        await sendEmergencyNotificationEmail(donor, emergencyRequest);
+        await sendEmergencyRequestEmail(donor, emergencyRequest);
         
         // Mark as notified
         donorInfo.notified = true;
